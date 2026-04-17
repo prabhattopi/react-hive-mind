@@ -1,8 +1,8 @@
-# react-hive-mind 🧠
+# react-hive-mind-hook 🧠
 
 Multiplayer React, without the server. Sync state across multiple browsers instantly using a Peer-to-Peer WebRTC Mesh Network.
 
-Building live multiplayer features usually requires spinning up complex WebSocket servers (Socket.io) or paying for third-party services. `react-hive-mind` is a drop-in replacement for `useState` that instantly mesh-networks everyone looking at the same "room". When one person updates the state, it updates on all screens globally in milliseconds, bypassing servers entirely.
+Building live multiplayer features usually requires spinning up complex WebSocket servers (Socket.io) or paying for third-party services. `react-hive-mind-hook` is a drop-in replacement for `useState` that instantly mesh-networks everyone looking at the same "room". When one person updates the state, it updates on all screens globally in milliseconds, bypassing servers entirely.
 
 ## ✨ Features
 - **🌍 Zero Server Backend:** Uses a temporary public MQTT broker for handshaking, then switches to pure P2P WebRTC data channels.
@@ -13,7 +13,7 @@ Building live multiplayer features usually requires spinning up complex WebSocke
 ## 📦 Installation
 
 ```bash
-npm install react-hive-mind mqtt
+npm install react-hive-mind-hook mqtt
 ```
 ## 🚀 Quick Start
 There are two primary ways to use the Hive Mind: for simple shared values, or for complex multiplayer objects.
@@ -22,7 +22,7 @@ There are two primary ways to use the Hive Mind: for simple shared values, or fo
 Drop the useHiveMind hook into any component. Pass a unique, unguessable "room hash" and an initial state. It works exactly like useState.
 
 ```
-import { useHiveMind } from 'react-hive-mind';
+import { useHiveMind } from 'react-hive-mind-hook';
 
 export default function CollaborativeDoc() {
   // Anyone in 'secret-doc-xyz' will share this text string
@@ -45,7 +45,7 @@ export default function CollaborativeDoc() {
 You can pass objects to useHiveMind to build complex real-time UI, like Figma-style multiplayer cursors.
 
 ```
-import { useHiveMind } from 'react-hive-mind';
+import { useHiveMind } from 'react-hive-mind-hook';
 
 export default function SharedCanvas() {
   // Track X and Y coordinates globally

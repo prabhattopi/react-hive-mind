@@ -1,6 +1,6 @@
 {
-  "name": "react-hive-mind",
-  "version": "1.0.0",
+  "name": "react-hive-mind-hook",
+  "version": "1.0.1",
   "description": "Multiplayer React without the server. Sync state across browsers instantly using P2P WebRTC.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
