@@ -1,0 +1,46 @@
+{
+  "name": "react-hive-mind",
+  "version": "1.0.0",
+  "description": "Multiplayer React without the server. Sync state across browsers instantly using P2P WebRTC.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "react",
+    "webrtc",
+    "multiplayer",
+    "p2p",
+    "state-management",
+    "serverless"
+  ],
+  "author": "Prabhat Singh",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prabhattopi/react-hive-mind.git"
+  },
+  "bugs": {
+    "url": "https://github.com/prabhattopi/react-hive-mind/issues"
+  },
+  "homepage": "https://github.com/prabhattopi/react-hive-mind#readme",
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  },
+  "dependencies": {
+    "mqtt": "^5.15.1",
+    "react": "^19.2.5"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.2"
+  }
+}
