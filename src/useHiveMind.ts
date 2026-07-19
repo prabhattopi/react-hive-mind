@@ -60,11 +60,16 @@ export function useHiveMind<T>(roomHash: string, initialState: T) {
     const setupChannel = (targetId: string, channel: RTCDataChannel) => {
       channels.current.set(targetId, channel);
       
-      channel.onopen = () => {
+      const sendInitialState = () => {
         updatePeersCount();
-        // Send our current state to the new guy
-        channel.send(JSON.stringify(stateRef.current)); 
+        channel.send(JSON.stringify(stateRef.current));
       };
+
+      if (channel.readyState === 'open') {
+        sendInitialState();
+      } else {
+        channel.onopen = sendInitialState;
+      }
       
       channel.onclose = () => {
         channels.current.delete(targetId);
@@ -73,8 +78,21 @@ export function useHiveMind<T>(roomHash: string, initialState: T) {
       };
       
       channel.onmessage = (event) => {
-        const incomingState = JSON.parse(event.data);
-        setLocalState(incomingState); // Update React state from network
+        try {
+          const incomingState = JSON.parse(event.data);
+          setLocalState((prev) => {
+            const currentTs = (prev as any)?.timestamp || 0;
+            const incomingTs = incomingState?.timestamp || 0;
+            if (incomingTs >= currentTs) {
+              return incomingState;
+            }
+            return prev;
+          });
+        } catch (e) {
+          try {
+            setLocalState(JSON.parse(event.data));
+          } catch(e2) {}
+        }
       };
     };
 
@@ -134,16 +152,21 @@ export function useHiveMind<T>(roomHash: string, initialState: T) {
   // The function the developer uses to update state across the world
   const setStateAndBroadcast = useCallback((newState: T | ((prev: T) => T)) => {
     setLocalState((prev) => {
-      const resolvedState = newState instanceof Function ? newState(prev) : newState;
+      const resolvedState = typeof newState === 'function' ? (newState as Function)(prev) : newState;
+      
+      let finalState = resolvedState;
+      if (typeof resolvedState === 'object' && resolvedState !== null) {
+        finalState = { ...resolvedState, timestamp: Date.now() };
+      }
       
       // Blast the new state to all connected peers over P2P Data Channels
       channels.current.forEach(channel => {
         if (channel.readyState === 'open') {
-          channel.send(JSON.stringify(resolvedState));
+          channel.send(JSON.stringify(finalState));
         }
       });
       
-      return resolvedState;
+      return finalState;
     });
   }, []);
 
